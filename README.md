@@ -1,3 +1,5 @@
 # infa_2019_kaliniushko
 it's test project
-learn git/github
+it's test project
+it's test project
+it's test project
