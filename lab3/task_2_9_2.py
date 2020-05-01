@@ -1,11 +1,12 @@
 from graph import *
 from math import sin, cos, pi
+
 window = mainWindow()
 window.geometry('600x600+350+70')
-canvasSize(600, 600)
+canvasSize(510, 600)
 
 
-def ellipse(x1, y1, x2, y2, vertex_count = 36):
+def ellipse(x1, y1, x2, y2, vertex_count=36):
     """
     This function draw an ellipse.
     It is necessary because the 'graph' module does not have the function to draw an ellipse.
@@ -14,116 +15,138 @@ def ellipse(x1, y1, x2, y2, vertex_count = 36):
     (y1, y2) = (min(y1, y2), max(y1, y2))
     a = (x2 - x1) / 2
     b = (y2 - y1) / 2
-    VERTEX = [(a * cos(i * 2 * pi / vertex_count) + (x1 + x2) / 2,\
-                b * sin(i * 2 * pi / vertex_count) + (y1 + y2) / 2)\
-                    for i in range(vertex_count)]
+    VERTEX = [(a * cos(i * 2 * pi / vertex_count) + (x1 + x2) / 2, \
+               b * sin(i * 2 * pi / vertex_count) + (y1 + y2) / 2) \
+              for i in range(vertex_count)]
     mypol = polygon(VERTEX)
     return mypol
 
 
-def fish(x0, y0):
-    # Draw a fish:
-    # a torso
-    brushColor(193, 204, 202)
-    polygon([(x0 + 30, y0 + 34),
-             (x0 + 40, y0 + 24),
-             (x0 + 50, y0 + 17),
-             (x0 + 60, y0 + 13),
-             (x0 + 70, y0 + 10),
-             (x0 + 80, y0 + 10),
-             (x0 + 90, y0 + 11),
-             (x0 + 100, y0 + 13),
-             (x0 + 110, y0 + 16),
-             (x0 + 100, y0 + 25),
-             (x0 + 90, y0 + 31),
-             (x0 + 80, y0 + 34),
-             (x0 + 70, y0 + 36),
-             (x0 + 60, y0 + 37),
-             (x0 + 50, y0 + 37),
-             (x0 + 40, y0 + 36),
-             (x0 + 30, y0 + 34)])
-
-    # a tail
-    polygon([(x0+10, y0 + 59),
-             (x0 + 0, y0 + 39),
-             (x0 + 10, y0 + 39),
-             (x0 + 20, y0 + 38),
-             (x0 + 30, y0 + 34)])
-
-    # a fins
-    brushColor(222, 167, 167)
-    polygon([(x0 + 60, y0 + 13),
-             (x0 + 55, y0 + 10),
-             (x0 + 50, y0 + 7),
-             (x0 + 40, y0 + 4),
-             (x0 + 80, y0 + 0),
-             (x0 + 83, y0 + 5),
-             (x0 + 80, y0 + 10),
-             (x0 + 70, y0 + 10)])
-
-    polygon([(x0 + 89, y0 + 32),
-             (x0 + 94, y0 + 36),
-             (x0 + 99, y0 + 36),
-             (x0 + 87, y0 + 44),
-             (x0 + 84, y0 + 42),
-             (x0 + 82, y0 + 39),
-             (x0 + 80, y0 + 34)])
-
-    polygon([(x0 + 50, y0 + 37),
-             (x0 + 49, y0 + 40),
-             (x0 + 46, y0 + 45),
-             (x0 + 42, y0 + 47),
-             (x0 + 59, y0 + 47),
-             (x0 + 61, y0 + 43),
-             (x0 + 59, y0 + 37)])
-
-    # an eye
-    brushColor(121, 121, 243)
-    circle(x0 + 92, y0 + 20, 5)
-    brushColor(127, 133, 141)
-    circle(x0 + 93, y0 + 21, 2)
-    penColor(219, 219, 36)
-    penSize(2)
-    line(x0 + 89, y0 + 19, x0 + 91, y0 + 21)
-    penColor('black')
-    penSize(1)
-
-
-def bear_fishing(x0, y0):
-    # Draw a bear fishing:
+def bear_fishing(x0, y0, size=1, mirror_xcoord=False, mirror_ycoord=False):
+    """
+    This function draw a bear fishing: a hole, a fishing rod, and a bear, which consist of primitives.
+    Parameters x0, y0 - it's the starting point of each primitive.
+    Parameter size - it's the coefficient for increasing each primitive in the x, y direction.
+    Parameters mirror_xcoord, mirror_ycoord - mirror the primitives along the x-axis and/or y-axis.
+    """
+    xcoord = 1
+    ycoord = 1
+    if mirror_xcoord:
+        xcoord *= -1
+    if mirror_ycoord:
+        ycoord *= -1
     # Draw a hole
     penColor('black')
     brushColor(76, 76, 76)
-    ellipse(x0 + 244, y0 + 265, x0 + 399, y0 + 315, vertex_count=36)
+    ellipse(x0 + 244 * xcoord * size, y0 + 265 * ycoord * size, x0 + 399 * xcoord * size, y0 + 315 * ycoord * size, vertex_count=36)
     brushColor(15, 79, 66)
-    ellipse(x0 + 259, y0 + 280, x0 + 384, y0 + 315, vertex_count=36)
+    ellipse(x0 + 259 * xcoord * size, y0 + 280 * ycoord * size, x0 + 384 * xcoord * size, y0 + 315 * ycoord * size, vertex_count=36)
 
     # Draw a fishing rod
     penColor('black')
     penSize(2)
-    line(x0 + 144, y0 + 217, x0 + 155, y0 + 171)
-    line(x0 + 155, y0 + 171, x0 + 334, y0 + 0)
+    line(x0 + 144 * xcoord * size, y0 + 217 * ycoord * size, x0 + 155 * xcoord * size, y0 + 171 * ycoord * size)
+    line(x0 + 155 * xcoord * size, y0 + 171 * ycoord * size, x0 + 334 * xcoord * size, y0 + 0 * ycoord * size)
     penSize(1)
-    line(x0 + 334, y0 + 0, x0 + 334, y0 + 300)
+    line(x0 + 334 * xcoord * size, y0 + 0 * ycoord * size, x0 + 334 * xcoord * size, y0 + 300 * ycoord * size)
 
     # Draw a bear:
     # a head
     penColor('black')
     brushColor(231, 231, 231)
-    ellipse(x0 + 69, y0 + 71, x0 + 161, y0 + 118, vertex_count=36)
-    circle(x0 + 82, y0 + 81, 8)
+    ellipse(x0 + 69 * xcoord * size, y0 + 71 * ycoord * size, x0 + 161 * xcoord * size, y0 + 118 * ycoord * size, vertex_count=36)
+    circle(x0 + 82 * xcoord * size, y0 + 81 * ycoord * size, 8 * size)
     brushColor('black')
-    circle(x0 + 109, y0 + 85, 2.6)
-    circle(x0 + 161, y0 + 91, 2.6)
-    line(x0 + 104, y0 + 106, x0 + 134, y0 + 106)
-    line(x0 + 134, y0 + 106, x0 + 157, y0+ 104)
+    circle(x0 + 109 * xcoord * size, y0 + 85 * ycoord * size, 2.6 * size)
+    circle(x0 + 161 * xcoord * size, y0 + 91 * ycoord * size, 2.6 * size)
+    line(x0 + 104 * xcoord * size, y0 + 106 * ycoord * size, x0 + 134 * xcoord * size, y0 + 106 * ycoord * size)
+    line(x0 + 134 * xcoord * size, y0 + 106 * ycoord * size, x0 + 157 * xcoord * size, y0 + 104 * ycoord * size)
 
     # a torso
     brushColor(231, 231, 231)
-    ellipse(x0 + 0, y0 + 105, x0 + 140, y0 + 355, vertex_count=36)
-    ellipse(x0 + 74, y0 + 285, x0 + 179, y0 + 365, vertex_count=36)
-    ellipse(x0 + 139, y0 + 345, x0 + 219, y0 + 373, vertex_count=36)
-    ellipse(x0 + 116, y0 + 159, x0 + 173, y0 + 185, vertex_count=36)
+    ellipse(x0 + 0 * xcoord * size, y0 + 105 * ycoord * size, x0 + 140 * xcoord * size, y0 + 355 * ycoord * size, vertex_count=36)
+    ellipse(x0 + 74 * xcoord * size, y0 + 285 * ycoord * size, x0 + 179 * xcoord * size, y0 + 365 * ycoord * size, vertex_count=36)
+    ellipse(x0 + 139 * xcoord * size, y0 + 345 * ycoord * size, x0 + 219 * xcoord * size, y0 + 373 * ycoord * size, vertex_count=36)
+    ellipse(x0 + 116 * xcoord * size, y0 + 159 * ycoord * size, x0 + 173 * xcoord * size, y0 + 185 * ycoord * size, vertex_count=36)
+
+
+def fish(x0, y0, size=1, mirror_xcoord=False, mirror_ycoord=False):
+    """
+    This function draw a fish: a torso, a a tail, a fins and an eye, which consist of primitives.
+    Parameters x0, y0 - it's the starting point of each primitive.
+    Parameter size - it's the coefficient for increasing each primitive in the x, y direction.
+    Parameters mirror_xcoord, mirror_ycoord - mirror the primitives along the x-axis and/or y-axis.
+    """
+    xcoord = 1
+    ycoord = 1
+    if mirror_xcoord:
+        xcoord *= -1
+    if mirror_ycoord:
+        ycoord *= -1
+    # a torso
+    brushColor(193, 204, 202)
+    polygon([(x0 + 30 * xcoord * size, y0 + 34 * ycoord * size),
+             (x0 + 40 * xcoord * size, y0 + 24 * ycoord * size),
+             (x0 + 50 * xcoord * size, y0 + 17 * ycoord * size),
+             (x0 + 60 * xcoord * size, y0 + 13 * ycoord * size),
+             (x0 + 70 * xcoord * size, y0 + 10 * ycoord * size),
+             (x0 + 80 * xcoord * size, y0 + 10 * ycoord * size),
+             (x0 + 90 * xcoord * size, y0 + 11 * ycoord * size),
+             (x0 + 100 * xcoord * size, y0 + 13 * ycoord * size),
+             (x0 + 110 * xcoord * size, y0 + 16 * ycoord * size),
+             (x0 + 100 * xcoord * size, y0 + 25 * ycoord * size),
+             (x0 + 90 * xcoord * size, y0 + 31 * ycoord * size),
+             (x0 + 80 * xcoord * size, y0 + 34 * ycoord * size),
+             (x0 + 70 * xcoord * size, y0 + 36 * ycoord * size),
+             (x0 + 60 * xcoord * size, y0 + 37 * ycoord * size),
+             (x0 + 50 * xcoord * size, y0 + 37 * ycoord * size),
+             (x0 + 40 * xcoord * size, y0 + 36 * ycoord * size),
+             (x0 + 30 * xcoord * size, y0 + 34 * ycoord * size)])
+
+    # a tail
+    polygon([(x0 + 10 * xcoord * size, y0 + 59 * ycoord * size),
+             (x0 + 0 * xcoord * size, y0 + 39 * ycoord * size),
+             (x0 + 10 * xcoord * size, y0 + 39 * ycoord * size),
+             (x0 + 20 * xcoord * size, y0 + 38 * ycoord * size),
+             (x0 + 30 * xcoord * size, y0 + 34 * ycoord * size)])
+
+    # a fins
+    brushColor(222, 167, 167)
+    polygon([(x0 + 60 * xcoord * size, y0 + 13 * ycoord * size),
+             (x0 + 55 * xcoord * size, y0 + 10 * ycoord * size),
+             (x0 + 50 * xcoord * size, y0 + 7 * ycoord * size),
+             (x0 + 40 * xcoord * size, y0 + 4 * ycoord * size),
+             (x0 + 80 * xcoord * size, y0 + 0 * ycoord * size),
+             (x0 + 83 * xcoord * size, y0 + 5 * ycoord * size),
+             (x0 + 80 * xcoord * size, y0 + 10 * ycoord * size),
+             (x0 + 70 * xcoord * size, y0 + 10 * ycoord * size)])
+
+    polygon([(x0 + 89 * xcoord * size, y0 + 32 * ycoord * size),
+             (x0 + 94 * xcoord * size, y0 + 36 * ycoord * size),
+             (x0 + 99 * xcoord * size, y0 + 36 * ycoord * size),
+             (x0 + 87 * xcoord * size, y0 + 44 * ycoord * size),
+             (x0 + 84 * xcoord * size, y0 + 42 * ycoord * size),
+             (x0 + 82 * xcoord * size, y0 + 39 * ycoord * size),
+             (x0 + 80 * xcoord * size, y0 + 34 * ycoord * size)])
+
+    polygon([(x0 + 50 * xcoord * size, y0 + 37 * ycoord * size),
+             (x0 + 49 * xcoord * size, y0 + 40 * ycoord * size),
+             (x0 + 46 * xcoord * size, y0 + 45 * ycoord * size),
+             (x0 + 42 * xcoord * size, y0 + 47 * ycoord * size),
+             (x0 + 59 * xcoord * size, y0 + 47 * ycoord * size),
+             (x0 + 61 * xcoord * size, y0 + 43 * ycoord * size),
+             (x0 + 59 * xcoord * size, y0 + 37 * ycoord * size)])
+
+    # an eye
+    brushColor(121, 121, 243)
+    circle(x0 + 92 * xcoord * size, y0 + 20 * ycoord * size, 5 * size)
+    brushColor(127, 133, 141)
+    circle(x0 + 93 * xcoord * size, y0 + 21 * ycoord * size, 2 * size)
+    penColor(219, 219, 36)
+    brushColor(219, 219, 36)
+    ellipse(x0 + 89 * xcoord * size, y0 + 19 * ycoord * size, x0 + 91 * xcoord * size, y0 + 21 * ycoord * size, vertex_count=36)
+    penColor('black')
+    penSize(1)
 
 
 # Draw a background
@@ -139,7 +162,7 @@ line(90, 340, 510, 340)
 # Draw a sun
 penColor(161, 249, 228)
 brushColor(161, 249, 228)
-ellipse(196, - 33, 489, 243, vertex_count = 36)
+ellipse(196, - 33, 489, 243, vertex_count=36)
 
 penColor('cyan')
 brushColor('cyan')
@@ -158,18 +181,47 @@ polygon([(330, 97), (352, 97), (352, 119), (330, 119)])
 
 penColor(255, 246, 214)
 brushColor(255, 246, 214)
-ellipse(332, 226, 347, 241, vertex_count = 36)
-ellipse(197, 98, 216, 114, vertex_count = 36)
-ellipse(467, 102, 487, 117, vertex_count = 36)
-ellipse(328, 91, 364, 121, vertex_count = 36)
+ellipse(332, 226, 347, 241, vertex_count=36)
+ellipse(197, 98, 216, 114, vertex_count=36)
+ellipse(467, 102, 487, 117, vertex_count=36)
+ellipse(328, 91, 364, 121, vertex_count=36)
 
-# Draw two fishing bears
-bear_fishing(91, 165)
-bear_fishing(201, 165)
+# Draw four fishing bears
+bear_fishing(500, 305, 0.22, mirror_xcoord=True)
+bear_fishing(330, 310, 0.28, mirror_xcoord=True)
+bear_fishing(91, 435, 0.32)
+bear_fishing(550, 418, 0.65, mirror_xcoord=True)
 
-# Draw two fish
-fish(350, 506)
-fish(300, 406)
+# Draw fish
+fish(405, 585, 0.35, mirror_xcoord=True, mirror_ycoord=True)
+fish(285, 585, 0.35, mirror_ycoord=True)
+fish(320, 560, 0.35)
 
+fish(210, 545, 0.3, mirror_xcoord=True)
+fish(230, 555, 0.3, mirror_xcoord=True)
+fish(155, 560, 0.3)
+fish(185, 540, 0.3)
+
+fish(235, 515, 0.2, mirror_xcoord=True, mirror_ycoord=True)
+fish(165, 518, 0.2, mirror_ycoord=True)
+fish(188, 505, 0.2)
+
+fish(250, 405, 0.28, mirror_xcoord=True)
+fish(270, 415, 0.28, mirror_xcoord=True)
+fish(205, 420, 0.28)
+fish(225, 400, 0.28)
+
+fish(270, 382, 0.15, mirror_xcoord=True, mirror_ycoord=True)
+fish(215, 380, 0.15, mirror_ycoord=True)
+fish(233, 372, 0.15)
+
+fish(440, 380, 0.23, mirror_xcoord=True)
+fish(460, 390, 0.23, mirror_xcoord=True)
+fish(405, 390, 0.23)
+fish(420, 375, 0.23)
+
+fish(455, 362, 0.12, mirror_xcoord=True, mirror_ycoord=True)
+fish(410, 362, 0.12, mirror_ycoord=True)
+fish(425, 354, 0.12)
 
 run()
