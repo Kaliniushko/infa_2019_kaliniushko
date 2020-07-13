@@ -85,7 +85,7 @@ def fish(x0, y0, size=1, mirror_xcoord=False, mirror_ycoord=False):
         ycoord *= -1
     # a torso
     brushColor(193, 204, 202)
-    polygon([(x0 + 30 * xcoord * size, y0 + 34 * ycoord * size),
+    torso = polygon([(x0 + 30 * xcoord * size, y0 + 34 * ycoord * size),
              (x0 + 40 * xcoord * size, y0 + 24 * ycoord * size),
              (x0 + 50 * xcoord * size, y0 + 17 * ycoord * size),
              (x0 + 60 * xcoord * size, y0 + 13 * ycoord * size),
@@ -104,7 +104,7 @@ def fish(x0, y0, size=1, mirror_xcoord=False, mirror_ycoord=False):
              (x0 + 30 * xcoord * size, y0 + 34 * ycoord * size)])
 
     # a tail
-    polygon([(x0 + 10 * xcoord * size, y0 + 59 * ycoord * size),
+    tail = polygon([(x0 + 10 * xcoord * size, y0 + 59 * ycoord * size),
              (x0 + 0 * xcoord * size, y0 + 39 * ycoord * size),
              (x0 + 10 * xcoord * size, y0 + 39 * ycoord * size),
              (x0 + 20 * xcoord * size, y0 + 38 * ycoord * size),
@@ -112,7 +112,7 @@ def fish(x0, y0, size=1, mirror_xcoord=False, mirror_ycoord=False):
 
     # a fins
     brushColor(222, 167, 167)
-    polygon([(x0 + 60 * xcoord * size, y0 + 13 * ycoord * size),
+    fin1 = polygon([(x0 + 60 * xcoord * size, y0 + 13 * ycoord * size),
              (x0 + 55 * xcoord * size, y0 + 10 * ycoord * size),
              (x0 + 50 * xcoord * size, y0 + 7 * ycoord * size),
              (x0 + 40 * xcoord * size, y0 + 4 * ycoord * size),
@@ -121,7 +121,7 @@ def fish(x0, y0, size=1, mirror_xcoord=False, mirror_ycoord=False):
              (x0 + 80 * xcoord * size, y0 + 10 * ycoord * size),
              (x0 + 70 * xcoord * size, y0 + 10 * ycoord * size)])
 
-    polygon([(x0 + 89 * xcoord * size, y0 + 32 * ycoord * size),
+    fin2 = polygon([(x0 + 89 * xcoord * size, y0 + 32 * ycoord * size),
              (x0 + 94 * xcoord * size, y0 + 36 * ycoord * size),
              (x0 + 99 * xcoord * size, y0 + 36 * ycoord * size),
              (x0 + 87 * xcoord * size, y0 + 44 * ycoord * size),
@@ -129,7 +129,7 @@ def fish(x0, y0, size=1, mirror_xcoord=False, mirror_ycoord=False):
              (x0 + 82 * xcoord * size, y0 + 39 * ycoord * size),
              (x0 + 80 * xcoord * size, y0 + 34 * ycoord * size)])
 
-    polygon([(x0 + 50 * xcoord * size, y0 + 37 * ycoord * size),
+    fin3 = polygon([(x0 + 50 * xcoord * size, y0 + 37 * ycoord * size),
              (x0 + 49 * xcoord * size, y0 + 40 * ycoord * size),
              (x0 + 46 * xcoord * size, y0 + 45 * ycoord * size),
              (x0 + 42 * xcoord * size, y0 + 47 * ycoord * size),
@@ -139,14 +139,18 @@ def fish(x0, y0, size=1, mirror_xcoord=False, mirror_ycoord=False):
 
     # an eye
     brushColor(121, 121, 243)
-    circle(x0 + 92 * xcoord * size, y0 + 20 * ycoord * size, 5 * size)
+    eye = circle(x0 + 92 * xcoord * size, y0 + 20 * ycoord * size, 5 * size)
     brushColor(127, 133, 141)
-    circle(x0 + 93 * xcoord * size, y0 + 21 * ycoord * size, 2 * size)
+    eye_apple1 = circle(x0 + 93 * xcoord * size, y0 + 21 * ycoord * size, 2 * size)
     penColor(219, 219, 36)
     brushColor(219, 219, 36)
-    ellipse(x0 + 89 * xcoord * size, y0 + 19 * ycoord * size, x0 + 91 * xcoord * size, y0 + 21 * ycoord * size, vertex_count=36)
+    eye_apple2 = ellipse(x0 + 89 * xcoord * size, y0 + 19 * ycoord * size, x0 + 91 * xcoord * size, y0 + 21 * ycoord * size, vertex_count=36)
     penColor('black')
     penSize(1)
+
+    # return a list of the fishes parts(primitives)
+    parts_of_the_fish = [torso, tail, fin1, fin2, fin3, eye, eye_apple1, eye_apple2]
+    return parts_of_the_fish
 
 
 # Draw a background
@@ -193,35 +197,152 @@ bear_fishing(91, 435, 0.32)
 bear_fishing(550, 418, 0.65, mirror_xcoord=True)
 
 # Draw fish
-fish(405, 585, 0.35, mirror_xcoord=True, mirror_ycoord=True)
-fish(285, 585, 0.35, mirror_ycoord=True)
-fish(320, 560, 0.35)
+fish_of_the_primitives1 = fish(405, 585, 0.35, mirror_xcoord=True, mirror_ycoord=True)
+fish_of_the_primitives2 = fish(285, 585, 0.35, mirror_ycoord=True)
+fish_of_the_primitives3 = fish(320, 560, 0.35)
 
-fish(210, 545, 0.3, mirror_xcoord=True)
-fish(230, 555, 0.3, mirror_xcoord=True)
-fish(155, 560, 0.3)
-fish(185, 540, 0.3)
+fish_of_the_primitives4 = fish(210, 545, 0.3, mirror_xcoord=True)
+fish_of_the_primitives5 = fish(230, 555, 0.3, mirror_xcoord=True)
+fish_of_the_primitives6 = fish(155, 560, 0.3)
+fish_of_the_primitives7 = fish(185, 540, 0.3)
 
-fish(235, 515, 0.2, mirror_xcoord=True, mirror_ycoord=True)
-fish(165, 518, 0.2, mirror_ycoord=True)
-fish(188, 505, 0.2)
+fish_of_the_primitives8 = fish(235, 515, 0.2, mirror_xcoord=True, mirror_ycoord=True)
+fish_of_the_primitives9 = fish(165, 518, 0.2, mirror_ycoord=True)
+fish_of_the_primitives10 = fish(188, 505, 0.2)
 
-fish(250, 405, 0.28, mirror_xcoord=True)
-fish(270, 415, 0.28, mirror_xcoord=True)
-fish(205, 420, 0.28)
-fish(225, 400, 0.28)
+fish_of_the_primitives11 = fish(250, 405, 0.28, mirror_xcoord=True)
+fish_of_the_primitives12 = fish(270, 415, 0.28, mirror_xcoord=True)
+fish_of_the_primitives13 = fish(205, 420, 0.28)
+fish_of_the_primitives14 = fish(225, 400, 0.28)
 
-fish(270, 382, 0.15, mirror_xcoord=True, mirror_ycoord=True)
-fish(215, 380, 0.15, mirror_ycoord=True)
-fish(233, 372, 0.15)
+fish_of_the_primitives15 = fish(270, 382, 0.15, mirror_xcoord=True, mirror_ycoord=True)
+fish_of_the_primitives16 = fish(215, 380, 0.15, mirror_ycoord=True)
+fish_of_the_primitives17 = fish(233, 372, 0.15)
 
-fish(440, 380, 0.23, mirror_xcoord=True)
-fish(460, 390, 0.23, mirror_xcoord=True)
-fish(405, 390, 0.23)
-fish(420, 375, 0.23)
+fish_of_the_primitives18 = fish(440, 380, 0.23, mirror_xcoord=True)
+fish_of_the_primitives19 = fish(460, 390, 0.23, mirror_xcoord=True)
+fish_of_the_primitives20 = fish(405, 390, 0.23)
+fish_of_the_primitives21 = fish(420, 375, 0.23)
 
-fish(455, 362, 0.12, mirror_xcoord=True, mirror_ycoord=True)
-fish(410, 362, 0.12, mirror_ycoord=True)
-fish(425, 354, 0.12)
+fish_of_the_primitives22 = fish(455, 362, 0.12, mirror_xcoord=True, mirror_ycoord=True)
+fish_of_the_primitives23 = fish(410, 362, 0.12, mirror_ycoord=True)
+fish_of_the_primitives24 = fish(425, 354, 0.12)
+
+
+tick = 0
+
+
+def update1():
+    for primitive in fish_of_the_primitives1:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives2:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives3:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives4:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives5:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives6:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives7:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives8:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives9:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives10:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives11:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives12:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives13:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives14:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives15:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives16:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives17:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives18:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives19:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives20:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives21:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives22:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives23:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives24:
+        moveObjectBy(primitive, 0, 10)
+
+
+def update2():
+    for primitive in fish_of_the_primitives1:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives2:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives3:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives4:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives5:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives6:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives7:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives8:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives9:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives10:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives11:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives12:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives13:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives14:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives15:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives16:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives17:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives18:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives19:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives20:
+        moveObjectBy(primitive, 0, - 10)
+    for primitive in fish_of_the_primitives21:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives22:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives23:
+        moveObjectBy(primitive, 0, 10)
+    for primitive in fish_of_the_primitives24:
+        moveObjectBy(primitive, 0, - 10)
+
+
+def update_fishes():
+    global tick
+    if tick % 2 == 0:
+        update1()
+    else:
+        update2()
+    tick += 1
+
+
+onTimer(update_fishes, 150)
 
 run()
