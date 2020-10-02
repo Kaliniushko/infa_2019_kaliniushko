@@ -1,5 +1,8 @@
 from tkinter import *
 from random import randint, choice
+import csv
+
+game_stoped = False
 
 
 class Ball:
@@ -8,7 +11,7 @@ class Ball:
         self.x = randint(self.R, WIDTH - self.R)
         self.y = randint((self.R + 50), HEIGHT - self.R)
         self.colors = ['red', 'orange', 'darkcyan', 'green', 'blue', 'indigo', 'darkmagenta']
-        self.dx, self.dy = +4, +5
+        self.dx, self.dy = +6, +7
         self.ball_id = canv.create_oval(self.x - self.R, self.y - self.R,
                                         self.x + self.R, self.y + self.R,
                                         fill=choice(self.colors), width=0)
@@ -27,10 +30,10 @@ class Ball:
 
 class Rhombus:
     def __init__(self):
-        self.R = randint(20, 30)
+        self.R = randint(30, 35)
         self.x = randint(self.R, WIDTH - self.R)
         self.y = randint((self.R + 50), HEIGHT - self.R)
-        self.dx, self.dy = +4, +5
+        self.dx, self.dy = +8, +9
         self.romb_id = canv.create_polygon(self.x, self.y - self.R, self.x + self.R, self.y,
                                            self.x, self.y + self.R, self.x - self.R, self.y,
                                            fill='yellow', width=0)
@@ -42,12 +45,17 @@ class Rhombus:
             self.dx = -self.dx
         if self.y + self.R > HEIGHT or (self.y - self.R - 50) <= 0:
             self.dy = -self.dy
+        if self.y + self.R > HEIGHT:
+            self.dy = self.dy - 2
 
     def show(self):
         canv.move(self.romb_id, self.dx, self.dy)
 
 
 def ball_move():
+    global game_stoped
+    if game_stoped:
+        return
     ball1.move()
     ball1.show()
     ball2.move()
@@ -56,8 +64,15 @@ def ball_move():
 
 
 def romb_move():
+    global game_stoped
+    if game_stoped:
+        return
+    global romb1
     romb1.move()
     romb1.show()
+    if romb1.dy >= 27 or romb1.dy <= - 27:
+        canv.delete(romb1.romb_id)
+        romb1 = Rhombus()
     root.after(20, romb_move)
 
 
@@ -92,8 +107,32 @@ def new_score(event):
         romb1 = Rhombus()
 
 
+def game_over():
+    global game_stoped, username_entry
+    game_stoped = True
+    canv.delete(ALL)
+    print("Game over")  # Почему "Game over" не печатается каждые 30 сек.?
+    game_over_label = Label(canv, text="Game over! Enter your name:", width=30)
+    game_over_label.pack()
+    username_entry = Entry(canv, width=30)
+    username_entry.pack(anchor=CENTER)
+    B = Button(canv, text="OK", command=end_the_game)
+    B.pack(anchor=S)
+
+
+def end_the_game():
+    global username, username_entry
+    username = username_entry.get()
+    new_winner_add = [username, global_score]
+    with open('winners_list.csv', 'a', newline='') as fd:
+        writer = csv.writer(fd)
+        writer.writerow(new_winner_add)
+    print(username)
+    root.destroy()
+
+
 def main():
-    global root, canv, WIDTH, HEIGHT, score_label, global_score, ball1, ball2, romb1
+    global root, canv, WIDTH, HEIGHT, score_label, global_score, ball1, ball2, romb1, game_over
     root = Tk()
     WIDTH = 800
     HEIGHT = 600
@@ -114,6 +153,9 @@ def main():
     romb_move()
 
     canv.bind('<Button-1>', new_score)
+
+    root.after(30000, game_over)
+
     root.mainloop()
 
 
